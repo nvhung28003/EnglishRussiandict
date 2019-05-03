@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/relative_word"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <EditText
+            android:paddingHorizontal="8dp"
+            android:layout_centerVertical="true"
+            android:maxLines="1"
+            android:id="@+id/edt_keyword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter the word"
+            android:inputType="text"
+            android:layout_toLeftOf="@+id/imv_iconrecord"
+            />
+        <ImageView
+            android:layout_marginRight="16dp"
+            android:layout_centerVertical="true"
+            android:id="@+id/imv_iconrecord"
+            android:layout_alignParentRight="true"
+            android:adjustViewBounds="true"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_record"/>
+    </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/orange"
+        android:orientation="vertical"
+        android:layout_alignBottom="@+id/relative_word"
+        android:layout_width="match_parent"
+        android:background="#FF6600"
+        android:layout_height="1dp"></LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rcv_Search"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/orange"
+        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+
+</RelativeLayout>

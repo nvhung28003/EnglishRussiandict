@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <item android:id="@+id/nav_home"
+        android:icon="@drawable/icon_home"
+        android:title="Home"/>
+    <item android:title="Gramar">
+        <menu>
+            <item
+                android:id="@+id/nav_Nouns"
+                android:icon="@drawable/ic_abc"
+                android:title="Nouns"/>
+
+            <item android:id="@+id/nav_Article"
+                android:icon="@drawable/ic_abc"
+                android:title="Article"/>
+
+            <item android:id="@+id/nav_Pronoun"
+                android:icon="@drawable/ic_abc"
+                android:title="Pronoun"/>
+
+            <item android:id="@+id/nav_Numberal"
+                android:icon="@drawable/ic_abc"
+                android:title="Numberal"/>
+
+            <item android:id="@+id/nav_Adjective"
+                android:icon="@drawable/ic_abc"
+                android:title="Adjective"/>
+
+            <item android:id="@+id/nav_Adverb"
+                android:icon="@drawable/ic_abc"
+                android:title="Adverb"/>
+
+            <item android:id="@+id/nav_Verb"
+                android:icon="@drawable/ic_abc"
+                android:title="Verb"/>
+
+            <item android:id="@+id/nav_Preposition"
+                android:icon="@drawable/ic_abc"
+                android:title="Preposition"/>
+
+            <item android:id="@+id/nav_Conjunction"
+                android:icon="@drawable/ic_abc"
+                android:title="Conjunction"/>
+
+            <item android:id="@+id/nav_Particles"
+                android:icon="@drawable/ic_abc"
+                android:title="Particles"/>
+
+            <item android:id="@+id/nav_Interjection"
+                android:icon="@drawable/ic_abc"
+                android:title="Interjection"/>
+        </menu>
+    </item>
+
+    <item android:title="PhraseBook 1">
+        <menu>
+            <item
+                android:id="@+id/PhraseBook1"
+                android:icon="@drawable/icon_book"
+                android:title="PhraseBook 1" />
+            <item
+                android:id="@+id/PhraseBook2"
+                android:icon="@drawable/icon_book"
+                android:title="PhraseBook 2" />
+        </menu>
+    </item>
+
+    <item android:title="Other">
+        <menu>
+            <item
+                android:id="@+id/nav_fastkey"
+                android:icon="@drawable/icon_fast"
+                android:title="Fast key" />
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_share"
+                android:title="Share" />
+            <item
+                android:id="@+id/nav_feedback"
+                android:icon="@drawable/icon_feedback"
+                android:title="Feedback" />
+            <item
+                android:id="@+id/nav_rate"
+                android:icon="@drawable/ic_rate"
+                android:title="Rate" />
+        </menu>
+    </item>
+</menu>
