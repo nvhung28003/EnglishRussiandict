@@ -30,7 +30,6 @@ public class MenuFragment extends Fragment implements MenuAdapter.Onitemclicklis
     private List<String> listname = new ArrayList<>();
     private MenuAdapter menuAdapter;
     private String mNameFile;
-    private WebView mwebView;
 
     @Nullable
     @Override

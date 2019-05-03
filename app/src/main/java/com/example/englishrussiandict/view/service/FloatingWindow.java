@@ -41,6 +41,7 @@ public class FloatingWindow extends Service implements View.OnClickListener {
     private EditText mEditTextKeywordFastkey;
     private ImageView mImageViewSpeechFastKey;
     private ImageView mImageViewDelete;
+    private TextView mTextViewHome;
     private boolean checkcountry;
     private Databasehelper databasehelper;
     private List<Dictionary> dictionaryList = new ArrayList<>();
@@ -216,6 +217,15 @@ public class FloatingWindow extends Service implements View.OnClickListener {
                 });
             }
         });
+        mTextViewHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(FloatingWindow.this,MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                stopSelf();
+            }
+        });
     }
 
     private void initlizacomponet() {
@@ -228,6 +238,7 @@ public class FloatingWindow extends Service implements View.OnClickListener {
         mImageViewDelete = mFloatingView.findViewById(R.id.imv_deleteFastkey);
         mTextViewFastkey = mFloatingView.findViewById(R.id.txt_Fastkey);
         mImageViewSpeechFastKey = mFloatingView.findViewById(R.id.imv_speechFastkey);
+        mTextViewHome = mFloatingView.findViewById(R.id.txt_HomeFastkey);
 
     }
 
