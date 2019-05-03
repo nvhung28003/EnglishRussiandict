@@ -12,12 +12,11 @@ import android.widget.TextView;
 
 import com.example.englishrussiandict.R;
 
-import java.awt.font.TextAttribute;
-
 public class WebMenuActivity extends AppCompatActivity {
-private WebView mwebView;
-private TextView mTextViewwebmenu ;
-private ImageView mImageViewBackwebmenu;
+    private WebView mwebView;
+    private TextView mTextViewwebmenu;
+    private ImageView mImageViewBackwebmenu;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,7 +27,7 @@ private ImageView mImageViewBackwebmenu;
         mImageViewBackwebmenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                onBackPressed();
             }
         });
         Intent intent = getIntent();

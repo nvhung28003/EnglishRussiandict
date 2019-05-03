@@ -8,21 +8,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.englishrussiandict.R;
-import com.example.englishrussiandict.entity.Dictionary;
-import com.example.englishrussiandict.view.fragment.SearchFragment;
+import com.example.englishrussiandict.entity.MyObjDictionary;
 
 import java.util.List;
 
 public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context context;
     private LayoutInflater inflater;
-    private List<Dictionary> dictionaryList;
+    private List<MyObjDictionary> dictionaryList;
     private OnitemClickListener onitemClickListener;
 
-    public HistoryAdapter(Context context, List<Dictionary> dictionaryList) {
+    public HistoryAdapter(Context context, List<MyObjDictionary> dictionaryList) {
         this.context = context;
         this.inflater = LayoutInflater.from(context);
         this.dictionaryList = dictionaryList;
@@ -31,16 +29,16 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View itemview = inflater.inflate(R.layout.item_history,null);
-        return new Viewholder(itemview);
+        View itemView = inflater.inflate(R.layout.item_history, null);
+        return new ViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-        final Dictionary dictionary = dictionaryList.get(i);
-        ( (Viewholder) viewHolder).mTextViewHistory.setText(dictionary.getWord());
+        final MyObjDictionary dictionary = dictionaryList.get(i);
+        ((ViewHolder) viewHolder).mTextViewHistory.setText(dictionary.getWord());
 
-        ( (Viewholder) viewHolder).mImageViewDeleteHistory.setOnClickListener(new View.OnClickListener() {
+        ((ViewHolder) viewHolder).mImageViewDeleteHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onitemClickListener.OnitemDeleteClick(dictionary);
@@ -59,16 +57,16 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public int getItemCount() {
         return dictionaryList.size();
     }
-    public void setOnitemClickListener(OnitemClickListener onitemClickListener)
-    {
+
+    public void setOnitemClickListener(OnitemClickListener onitemClickListener) {
         this.onitemClickListener = onitemClickListener;
     }
 
-    public class Viewholder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView mTextViewHistory;
         private ImageView mImageViewDeleteHistory;
 
-        public Viewholder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
             mTextViewHistory = itemView.findViewById(R.id.txthistory);
             mImageViewDeleteHistory = itemView.findViewById(R.id.imv_deletehistory);
@@ -76,7 +74,8 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     public interface OnitemClickListener {
-        void OnitemClicked(Dictionary dictionary);
-        void OnitemDeleteClick(Dictionary dictionary);
+        void OnitemClicked(MyObjDictionary dictionary);
+
+        void OnitemDeleteClick(MyObjDictionary dictionary);
     }
 }

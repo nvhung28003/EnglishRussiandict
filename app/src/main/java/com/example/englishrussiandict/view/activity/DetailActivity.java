@@ -2,15 +2,14 @@ package com.example.englishrussiandict.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.speech.tts.TextToSpeech;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.example.englishrussiandict.MyConstants;
 import com.example.englishrussiandict.R;
 
 import java.util.Locale;
@@ -33,8 +32,8 @@ public class DetailActivity extends AppCompatActivity {
         mImageView_backdetail = findViewById(R.id.imv_backdetail);
         mImageViewspeech = findViewById(R.id.imv_speech);
         Intent intent = getIntent();
-        mWord = intent.getStringExtra("WORD");
-         mDefitinition = intent.getStringExtra("DEFINITION");
+        mWord = intent.getStringExtra(MyConstants.KEY_WORD_CURRENT_SEARCH);
+        mDefitinition = intent.getStringExtra("DEFINITION");
 
         mTextView_top.setText(mWord);
         mTextView_mid.setText(mWord);
@@ -48,8 +47,7 @@ public class DetailActivity extends AppCompatActivity {
         mTextToSpeech = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
-                if(status == TextToSpeech.SUCCESS)
-                {
+                if (status == TextToSpeech.SUCCESS) {
                     int result = mTextToSpeech.setLanguage(Locale.ENGLISH);
                     mImageViewspeech.setEnabled(true);
                 }
@@ -64,16 +62,15 @@ public class DetailActivity extends AppCompatActivity {
         });
 
     }
-    public void speak()
-    {
 
-        mTextToSpeech.speak(mWord,TextToSpeech.QUEUE_FLUSH,null);
+    public void speak() {
+
+        mTextToSpeech.speak(mWord, TextToSpeech.QUEUE_FLUSH, null);
     }
 
     @Override
     protected void onDestroy() {
-        if(mTextToSpeech !=null)
-        {
+        if (mTextToSpeech != null) {
             mTextToSpeech.stop();
             mTextToSpeech.shutdown();
         }

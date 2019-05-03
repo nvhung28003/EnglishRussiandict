@@ -11,18 +11,16 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.example.englishrussiandict.MyConstants;
 import com.example.englishrussiandict.R;
 import com.example.englishrussiandict.adapter.SearchAdapter;
-import com.example.englishrussiandict.entity.Dictionary;
-import com.example.englishrussiandict.sqlitedb.Database_history;
-import com.example.englishrussiandict.sqlitedb.Databasehelper;
+import com.example.englishrussiandict.entity.MyObjDictionary;
 import com.example.englishrussiandict.view.activity.DetailActivity;
 import com.example.englishrussiandict.view.activity.MainActivity;
 
@@ -37,8 +35,8 @@ public class SearchFragment extends Fragment implements SearchAdapter.OnitemClic
 
     private SearchAdapter searchAdapter;
     private RecyclerView rcvSearch;
-    private List<Dictionary> dictionaryList = new ArrayList<>();
-    private List<Dictionary> dictionaries = new ArrayList<>();
+    private List<MyObjDictionary> dictionaryList = new ArrayList<>();
+    private List<MyObjDictionary> dictionaries = new ArrayList<>();
     public static final int REQUEST_CODE_SPEECH_INPUT = 1000;
 
     @Nullable
@@ -140,9 +138,9 @@ public class SearchFragment extends Fragment implements SearchAdapter.OnitemClic
     }
 
     @Override
-    public void OnitemClicked(Dictionary dictionary) {
+    public void OnitemClicked(MyObjDictionary dictionary) {
         Intent intent = new Intent(SearchFragment.super.getContext(), DetailActivity.class);
-        intent.putExtra("WORD", dictionary.getWord());
+        intent.putExtra(MyConstants.KEY_WORD_CURRENT_SEARCH, dictionary.getWord());
         intent.putExtra("DEFINITION", dictionary.getDefinition());
         MainActivity.database_history.addhistory(dictionary);
         startActivity(intent);
@@ -150,7 +148,7 @@ public class SearchFragment extends Fragment implements SearchAdapter.OnitemClic
     }
 
     @Override
-    public void Onitemchoosefavorites(Dictionary dictionary) {
+    public void Onitemchoosefavorites(MyObjDictionary dictionary) {
         MainActivity.database_favorites.addfavorite(dictionary);
     }
 }

@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.englishrussiandict.R;
-import com.example.englishrussiandict.entity.Dictionary;
+import com.example.englishrussiandict.entity.MyObjDictionary;
 import com.example.englishrussiandict.view.activity.MainActivity;
 
 import java.util.List;
@@ -18,10 +18,10 @@ import java.util.List;
 public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context context;
     private LayoutInflater inflater;
-    private List<Dictionary> dictionaryList;
+    private List<MyObjDictionary> dictionaryList;
     private OnitemClickListener onitemClickListener;
-    private boolean checkfavorite;
-    public SearchAdapter(Context context, List<Dictionary> dictionaryList) {
+    private boolean checkFavorite;
+    public SearchAdapter(Context context, List<MyObjDictionary> dictionaryList) {
         this.context = context;
         this.inflater = LayoutInflater.from(context);
         this.dictionaryList = dictionaryList;
@@ -37,7 +37,7 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     @Override
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder viewHolder, int i) {
-        final Dictionary dictionary = dictionaryList.get(i);
+        final MyObjDictionary dictionary = dictionaryList.get(i);
 
         ((Viewholder) viewHolder).txt_wordsearch.setText(dictionary.getWord());
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -49,16 +49,16 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         ((Viewholder) viewHolder).imv_star.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(checkfavorite == true)
+                if(checkFavorite == true)
                 {
                     MainActivity.database_favorites.addfavorite(dictionary);
                     ((Viewholder) viewHolder).imv_star.setBackgroundResource(R.drawable.ic_favorited);
-                    checkfavorite = false;
+                    checkFavorite = false;
                 }
                 else {
                     MainActivity.database_favorites.deletedata(dictionary.get_id());
                     ((Viewholder) viewHolder).imv_star.setBackgroundResource(R.drawable.ic_not_favorite);
-                    checkfavorite = true;
+                    checkFavorite = true;
                 }
             }
         });
@@ -84,8 +84,8 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     public interface OnitemClickListener {
-        void OnitemClicked(Dictionary dictionary);
-        void Onitemchoosefavorites(Dictionary dictionary);
+        void OnitemClicked(MyObjDictionary dictionary);
+        void Onitemchoosefavorites(MyObjDictionary dictionary);
     }
 
 }

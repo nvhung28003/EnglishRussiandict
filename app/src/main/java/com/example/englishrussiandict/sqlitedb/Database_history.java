@@ -5,9 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.support.annotation.Nullable;
 
-import com.example.englishrussiandict.entity.Dictionary;
+import com.example.englishrussiandict.entity.MyObjDictionary;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +43,7 @@ public class Database_history extends SQLiteOpenHelper {
 
     }
 
-    public void addhistory(Dictionary dictionary) {
+    public void addhistory(MyObjDictionary dictionary) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(_ID, dictionary.get_id());
@@ -57,8 +56,8 @@ public class Database_history extends SQLiteOpenHelper {
         db.close();
     }
 
-    public List<Dictionary> getalldictionaryList() {
-        List<Dictionary> dictionaryList = new ArrayList<>();
+    public List<MyObjDictionary> getalldictionaryList() {
+        List<MyObjDictionary> dictionaryList = new ArrayList<>();
         String selectquery = "SELECT * FROM " + TABLE_NAME;
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -66,7 +65,7 @@ public class Database_history extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
 
-                Dictionary dictionary = new Dictionary();
+                MyObjDictionary dictionary = new MyObjDictionary();
                 dictionary.set_id(cursor.getString(0));
                 dictionary.setWord(cursor.getString(1));
                 dictionary.setDefinition(cursor.getString(2));

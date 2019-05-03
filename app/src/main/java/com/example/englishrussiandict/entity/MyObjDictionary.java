@@ -1,16 +1,16 @@
 package com.example.englishrussiandict.entity;
 
-public class Dictionary {
+public class MyObjDictionary {
     String _id;
     String word;
     String definition;
     String status;
     String user_created;
 
-    public Dictionary() {
+    public MyObjDictionary() {
     }
 
-    public Dictionary(String _id, String word, String definition, String status, String user_created) {
+    public MyObjDictionary(String _id, String word, String definition, String status, String user_created) {
         this._id = _id;
         this.word = word;
         this.definition = definition;

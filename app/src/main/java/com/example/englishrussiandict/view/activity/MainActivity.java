@@ -1,48 +1,31 @@
 package com.example.englishrussiandict.view.activity;
 
-import android.app.TaskStackBuilder;
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.content.res.AssetManager;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.speech.RecognizerIntent;
-import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.View;
-import android.support.v4.view.GravityCompat;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.view.MenuItem;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
-import android.widget.EditText;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.englishrussiandict.MyConstants;
 import com.example.englishrussiandict.R;
-import com.example.englishrussiandict.adapter.SearchAdapter;
-import com.example.englishrussiandict.entity.Dictionary;
 import com.example.englishrussiandict.sqlitedb.Database_favorites;
 import com.example.englishrussiandict.sqlitedb.Database_history;
-import com.example.englishrussiandict.sqlitedb.Databasehelper;
+import com.example.englishrussiandict.sqlitedb.MyDatabaseHelper;
 import com.example.englishrussiandict.view.fragment.FavoritesFragment;
 import com.example.englishrussiandict.view.fragment.HistoryFragment;
 import com.example.englishrussiandict.view.fragment.MenuFragment;
@@ -50,11 +33,6 @@ import com.example.englishrussiandict.view.fragment.SearchFragment;
 import com.example.englishrussiandict.view.fragment.TranslatorFragment;
 import com.example.englishrussiandict.view.fragment.WebFragment;
 import com.example.englishrussiandict.view.service.FloatingWindow;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
 
 
 public class MainActivity extends AppCompatActivity
@@ -74,7 +52,7 @@ public class MainActivity extends AppCompatActivity
     private WebFragment mwebFragment;
     private MenuFragment mmenuFragment;
     private Toolbar mToolbar;
-    public static Databasehelper databasehelper;
+    public static MyDatabaseHelper databasehelper;
     public static Database_history database_history;
     public static Database_favorites database_favorites;
     public static final String FILENAME = "FILENAME";
@@ -96,7 +74,7 @@ public class MainActivity extends AppCompatActivity
         mnavigationView.setNavigationItemSelectedListener(this);
         database_favorites = new Database_favorites(this);
         database_history = new Database_history(this);
-        databasehelper = new Databasehelper(this);
+        databasehelper = new MyDatabaseHelper(this);
         databasehelper.createDataBase();
         if (msearchFragment == null) {
             msearchFragment = new SearchFragment();
@@ -110,14 +88,13 @@ public class MainActivity extends AppCompatActivity
         mlinear_bottomFavorites.setOnClickListener(this);
         mlinear_bottomWeb.setOnClickListener(this);
         mlinear_bottomTranlator.setOnClickListener(this);
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this))
-        {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
             askPermission();
         }
 
     }
-    private void askPermission()
-    {
+
+    private void askPermission() {
         Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                 Uri.parse("package:" + getPackageName()));
         startActivityForResult(intent, SYSTEM_ALERT_WINDOW_PERMISSION);
@@ -162,7 +139,7 @@ public class MainActivity extends AppCompatActivity
                 white();
                 mImageViewSearch.setColorFilter(ContextCompat.getColor(this, R.color.orange));
                 mTextViewSearch.setTextColor(ContextCompat.getColor(this, R.color.orange));
-                mToolbar.setTitle("Home");
+                mToolbar.setTitle(getString(R.string.title_toolbar_home));
 
                 mlinear_bottom.setVisibility(View.VISIBLE);
                 getSupportFragmentManager().beginTransaction().replace(R.id.linear_main, msearchFragment).commit();
@@ -315,15 +292,19 @@ public class MainActivity extends AppCompatActivity
                 mmenuFragment.setArguments(b12);
                 break;
             case R.id.nav_fastkey:
-                if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
-                {
-                    startService(new Intent(MainActivity.this,FloatingWindow.class));
-                } else if(Settings.canDrawOverlays(this))
-                {
-                    startService(new Intent(MainActivity.this,FloatingWindow.class));
-                }else {
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+                        startService(new Intent(MainActivity.this, FloatingWindow.class));
+                    } else {
+                        startForegroundService(new Intent(MainActivity.this, FloatingWindow.class));
+                    }
+
+                } else if (Settings.canDrawOverlays(this)) {
+                    startService(new Intent(MainActivity.this, FloatingWindow.class));
+                } else {
                     askPermission();
-                    Toast.makeText(this,"You need System Alert Window Permission to do this",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "You need System Alert Window Permission to do this", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.nav_share:
@@ -351,7 +332,7 @@ public class MainActivity extends AppCompatActivity
 
                 mnavigationView.getMenu().findItem(item.getItemId()).setCheckable(true);
                 Intent i = new Intent(android.content.Intent.ACTION_VIEW);
-                i.setData(Uri.parse("https://play.google.com/store/apps/details?id=com.hdpsolution.englishrussiandict&fbclid=IwAR0uZHmX0lVbmj7-eodfrL805npirZV_plpZkoTe01JPz-Avp2xijQLVfgU"));
+                i.setData(Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName()));
                 startActivity(i);
                 break;
 
@@ -398,7 +379,7 @@ public class MainActivity extends AppCompatActivity
 
                 mImageViewSearch.setColorFilter(ContextCompat.getColor(this, R.color.orange));
                 mTextViewSearch.setTextColor(ContextCompat.getColor(this, R.color.orange));
-                mTextViewSearch.setTextSize(15);
+                mTextViewSearch.setTextSize(MyConstants.COMMON_TEXT_SIZE);
 
                 mlinear_bottom.setVisibility(View.VISIBLE);
                 getSupportFragmentManager().beginTransaction().replace(R.id.linear_main, msearchFragment).commit();
@@ -410,7 +391,7 @@ public class MainActivity extends AppCompatActivity
                 white();
                 mImageViewHistory.setColorFilter(ContextCompat.getColor(this, R.color.orange));
                 mTextViewHistory.setTextColor(ContextCompat.getColor(this, R.color.orange));
-                mTextViewHistory.setTextSize(15);
+                mTextViewHistory.setTextSize(MyConstants.COMMON_TEXT_SIZE);
                 mlinear_bottom.setVisibility(View.VISIBLE);
                 getSupportFragmentManager().beginTransaction().replace(R.id.linear_main, mhistoryFragment).commit();
                 break;
@@ -421,7 +402,7 @@ public class MainActivity extends AppCompatActivity
                 white();
                 mImageViewFavorites.setColorFilter(ContextCompat.getColor(this, R.color.orange));
                 mTextViewFavorites.setTextColor(ContextCompat.getColor(this, R.color.orange));
-                mTextViewFavorites.setTextSize(15);
+                mTextViewFavorites.setTextSize(MyConstants.COMMON_TEXT_SIZE);
                 mlinear_bottom.setVisibility(View.VISIBLE);
                 getSupportFragmentManager().beginTransaction().replace(R.id.linear_main, mfavoritesFragment).commit();
                 break;
@@ -432,7 +413,7 @@ public class MainActivity extends AppCompatActivity
                 white();
                 mImageViewWeb.setColorFilter(ContextCompat.getColor(this, R.color.orange));
                 mTextViewWeb.setTextColor(ContextCompat.getColor(this, R.color.orange));
-                mTextViewWeb.setTextSize(15);
+                mTextViewWeb.setTextSize(MyConstants.COMMON_TEXT_SIZE);
                 mlinear_bottom.setVisibility(View.VISIBLE);
                 getSupportFragmentManager().beginTransaction().replace(R.id.linear_main, mwebFragment).commit();
                 break;
@@ -441,7 +422,7 @@ public class MainActivity extends AppCompatActivity
                     mtranslatorFragment = new TranslatorFragment();
                 }
                 white();
-                mTextViewTranslator.setTextSize(15);
+                mTextViewTranslator.setTextSize(MyConstants.COMMON_TEXT_SIZE);
                 mImageViewTranslator.setColorFilter(ContextCompat.getColor(this, R.color.orange));
                 mTextViewTranslator.setTextColor(ContextCompat.getColor(this, R.color.orange));
                 mlinear_bottom.setVisibility(View.VISIBLE);

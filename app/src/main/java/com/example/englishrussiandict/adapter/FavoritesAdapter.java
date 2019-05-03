@@ -10,17 +10,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.englishrussiandict.R;
-import com.example.englishrussiandict.entity.Dictionary;
+import com.example.englishrussiandict.entity.MyObjDictionary;
 
 import java.util.List;
 
 public class FavoritesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context context;
     private LayoutInflater inflater;
-    private List<Dictionary> dictionaryList;
+    private List<MyObjDictionary> dictionaryList;
     private OnitemClickListener onitemClickListener;
 
-    public FavoritesAdapter(Context context, List<Dictionary> dictionaryList) {
+    public FavoritesAdapter(Context context, List<MyObjDictionary> dictionaryList) {
         this.context = context;
         this.inflater = LayoutInflater.from(context);
         this.dictionaryList = dictionaryList;
@@ -29,16 +29,16 @@ public class FavoritesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View itemview = inflater.inflate(R.layout.item_favorites,null);
+        View itemview = inflater.inflate(R.layout.item_favorites, null);
         return new Viewholder(itemview);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder viewHolder, int i) {
-        final Dictionary dictionary = dictionaryList.get(i);
-        ( (Viewholder) viewHolder).mTextViewFavorites.setText(dictionary.getWord());
+        final MyObjDictionary dictionary = dictionaryList.get(i);
+        ((Viewholder) viewHolder).mTextViewFavorites.setText(dictionary.getWord());
 
-        ( (Viewholder) viewHolder).mImageViewDeleteFavorites.setOnClickListener(new View.OnClickListener() {
+        ((Viewholder) viewHolder).mImageViewDeleteFavorites.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onitemClickListener.OnitemDeleteClick(dictionary);
@@ -58,8 +58,8 @@ public class FavoritesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public int getItemCount() {
         return dictionaryList.size();
     }
-    public void setOnitemClickListener(OnitemClickListener onitemClickListener)
-    {
+
+    public void setOnitemClickListener(OnitemClickListener onitemClickListener) {
         this.onitemClickListener = onitemClickListener;
     }
 
@@ -73,8 +73,10 @@ public class FavoritesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             mImageViewDeleteFavorites = itemView.findViewById(R.id.imv_deletefavorites);
         }
     }
+
     public interface OnitemClickListener {
-        void OnitemClicked(Dictionary dictionary);
-        void OnitemDeleteClick(Dictionary dictionary);
+        void OnitemClicked(MyObjDictionary dictionary);
+
+        void OnitemDeleteClick(MyObjDictionary dictionary);
     }
 }

@@ -1,12 +1,15 @@
 package com.example.englishrussiandict.view.service;
 
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
+import android.os.Build;
 import android.os.IBinder;
 import android.speech.tts.TextToSpeech;
-import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -16,11 +19,10 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.englishrussiandict.R;
-import com.example.englishrussiandict.entity.Dictionary;
-import com.example.englishrussiandict.sqlitedb.Databasehelper;
+import com.example.englishrussiandict.entity.MyObjDictionary;
+import com.example.englishrussiandict.sqlitedb.MyDatabaseHelper;
 import com.example.englishrussiandict.view.activity.MainActivity;
 
 import java.util.ArrayList;
@@ -43,8 +45,8 @@ public class FloatingWindow extends Service implements View.OnClickListener {
     private ImageView mImageViewDelete;
     private TextView mTextViewHome;
     private boolean checkcountry;
-    private Databasehelper databasehelper;
-    private List<Dictionary> dictionaryList = new ArrayList<>();
+    private MyDatabaseHelper databasehelper;
+    private List<MyObjDictionary> dictionaryList = new ArrayList<>();
     private TextToSpeech mTextToSpeech;
 
     public FloatingWindow() {
@@ -59,9 +61,16 @@ public class FloatingWindow extends Service implements View.OnClickListener {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        //
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForeground(0, new Notification());
+        }
+        //
+
         mFloatingView = LayoutInflater.from(this).inflate(R.layout.floating_widget_layout, null);
         initlizacomponet();
-        databasehelper = new Databasehelper(this);
+        databasehelper = new MyDatabaseHelper(this);
         databasehelper.createDataBase();
         if (dictionaryList.isEmpty()) {
             dictionaryList = databasehelper.getalldictionary();
@@ -226,6 +235,18 @@ public class FloatingWindow extends Service implements View.OnClickListener {
                 stopSelf();
             }
         });
+    }
+
+    @Override
+    public void onTaskRemoved(Intent rootIntent) {
+        super.onTaskRemoved(rootIntent);
+        PendingIntent service = PendingIntent.getService(
+                getApplicationContext(),
+                1001,
+                new Intent(getApplicationContext(), FloatingWindow.class),
+                PendingIntent.FLAG_ONE_SHOT);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, 500, service);
     }
 
     private void initlizacomponet() {

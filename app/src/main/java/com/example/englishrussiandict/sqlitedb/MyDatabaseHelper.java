@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.example.englishrussiandict.entity.Dictionary;
+import com.example.englishrussiandict.entity.MyObjDictionary;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -15,7 +15,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Databasehelper extends SQLiteOpenHelper {
+public class MyDatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "dictionary.sqlite";
     public static final String TABLE_NAME = "words";
     public static final int VERSION = 1;
@@ -27,7 +27,7 @@ public class Databasehelper extends SQLiteOpenHelper {
     private Context context;
     private String duongdandatabase = "";
 
-    public Databasehelper(Context context) {
+    public MyDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, VERSION);
         this.context = context;
         duongdandatabase = context.getFilesDir().getParent() + "/databases/" + DATABASE_NAME;
@@ -92,15 +92,15 @@ public class Databasehelper extends SQLiteOpenHelper {
 
     }
 
-    public List<Dictionary> getalldictionary() {
-        List<Dictionary> dictionaryList = new ArrayList<>();
+    public List<MyObjDictionary> getalldictionary() {
+        List<MyObjDictionary> dictionaryList = new ArrayList<>();
         String selecquery = "SELECT * FROM " + TABLE_NAME;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selecquery, null);
 
         if (cursor.moveToFirst()) {
             do {
-                Dictionary dictionary = new Dictionary();
+                MyObjDictionary dictionary = new MyObjDictionary();
                 dictionary.set_id(cursor.getString(0));
                 dictionary.setWord(cursor.getString(1));
                 dictionary.setDefinition(cursor.getString(2));
